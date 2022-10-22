@@ -1,0 +1,365 @@
+---
+title: "Pratical Machine Learning - Course Project"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Introduction
+
+Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity. One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. 
+
+In this [project](https://www.coursera.org/learn/practical-machine-learning/supplement/PvInj/course-project-instructions-read-first), the goal is creating a model to predict the manner in which they did the exercise. To do so, we are going to use the data from the study about [Qualitative Activity Recognition of Weight Lifting Exercises](http://groupware.les.inf.puc-rio.br/public/papers/2013.Velloso.QAR-WLE.pdf) [1] that register the accelerometers on the belt, forearm, arm, and dumbell of 6 participants. In this study, the participants were asked to perform barbell lifts correctly and incorrectly in 5 different ways. More information about this data is available on  and more details about it can be access by this website http://groupware.les.inf.puc-rio.br/har, in the section on the Weight Lifting Exercise Dataset.
+
+## Assignment
+
+As said previously, the goal of your project is to predict the manner in which they did the exercise. This is the "classe" variable in the training set. To do so, it is allowed to use any of the other variables to predict with. This paper must report how built the created model, how were used the cross validation, what is the expected out of sample error, and the cause of the choices maded. After that, it must present the prediction result of the model over 20 different test cases.
+
+```{r setup, include=TRUE}
+options(scipen=999)         # make the number printer more readable
+Sys.setenv(LANG = "en")     # show messages on english
+Sys.setenv(LANGUAGE = "en") # show messages on english
+rm(list=ls())               # remove other data from env, if any
+set.seed(123)               # set a seed to ensure get always the same results
+```
+
+## Data
+
+```{r consts, include=TRUE}
+trainDataLink <- 'https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv'
+trainDataFile <- 'pml-training.csv';
+testDataLink  <- 'https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv'
+testDataFile  <- 'pml-testing';
+```
+
+The data for this assignment is divided among [trainng data](`r trainDataLink`) and [test data](`r testDataLink`):
+
+## Loading Libraries
+
+```{r load_libraries,warning=FALSE,}
+# loading required libraries
+# install.packages(c("devtools", "knitr","ggplot2","data.table","caret",
+#   "doParallel","e1071","rpart","rpart.plot","rattle","gridExtra","kableExtra", "ggRandomForests"), dependencies = TRUE)
+library('knitr')
+library('ggplot2')
+library('data.table')
+library('caret')
+library('devtools')
+library('doParallel') 
+library('e1071')
+library('rattle')
+library('rpart')
+library('rpart.plot')
+library('gridExtra')
+library('kableExtra')
+library('ggRandomForests')
+registerDoParallel(cores=4)
+```
+
+## Loading and preprocessing the data
+
+Download the data and load it into data.table.
+
+```{r loadingData}
+if ( !file.exists(trainDataFile) ) {
+  download.file(trainDataLink, trainDataFile)
+}
+if ( !file.exists(testDataFile) ) {
+  download.file(testDataLink, testDataFile)
+}
+trainData <- read.csv( trainDataFile, na.strings=c('#DIV/0!', '', 'NA'), stringsAsFactors = FALSE)
+testData  <- read.csv( testDataFile,  na.strings=c('#DIV/0!', '', 'NA'), stringsAsFactors = FALSE)
+```
+
+### Removing Null Columns
+
+Remove all columns with 97% or more rows with null values.
+
+```{r removingNAColumns}
+MAX_PERCENT_OF_NA_VALUES = 0.97
+fields <- names(trainData)
+size <-nrow(trainData)
+fieldsToRemove <- c()
+
+for(field in fields) {
+  column <- trainData[[field]]
+  percentOfNA <- ( (length(column[is.na(column)])) / size )
+  if( percentOfNA >= MAX_PERCENT_OF_NA_VALUES ) {
+    fieldsToRemove[length(fieldsToRemove)+1] <- field;
+  }
+}
+print(paste("removing these fields for having to many empty values: (",paste(fieldsToRemove, collapse = ', '),")"));
+# using the same field list to train and test to avoid different field list
+trainData <- trainData[ , !(colnames(trainData) %in% fieldsToRemove)]
+testData  <- testData[  , !(colnames(testData)  %in% fieldsToRemove)]
+```
+### Replacing Null values by the Median
+
+Replace remaing null values by the median or the most common value.
+```{r replacingNAValues}
+fields <- names(trainData)
+commonValues <- c()
+for(field in fields) {
+  column <- trainData[[field]]
+  if(!is.character(column)){
+    new_value <- median(column)
+  } else {
+    new_value <- names(sort(table(column),decreasing=TRUE)[1]) 
+  }
+  commonValues[field] <- new_value;
+}
+replaceNullByCommonValues <- function(dataframe,commonValues) {
+  for(field in fields) {
+    column <- dataframe[[field]]
+    totalNull <- length(column[is.na(column)])
+    if(totalNull > 0) {
+      commonValue <- commonValues[field]
+      print(paste("replacing",totalNull," null values on",field,"by",commonValue))
+      column[is.na(column)] <- commonValue
+      dataframe[[field]] <- column
+    }
+  }
+  return(dataframe)
+}
+trainData <- replaceNullByCommonValues(trainData,commonValues)
+testData  <- replaceNullByCommonValues(testData,commonValues)
+print("all the null values where replaced by the common values")
+```
+
+## Remove Near Zero Variance Columns
+```{r remove_near_zero_variance}
+nearZeroVarFields <- nearZeroVar(trainData, names = TRUE)
+trainData <- trainData[ , !(colnames(trainData) %in% nearZeroVarFields)]
+if( length(nearZeroVarFields) > 0 ) {
+  cat(paste("removing these fields for having near zero variance: (",paste(nearZeroVarFields, collapse = ', '),")"));  
+} else {
+  cat("all fields have a acceptable variance")
+}
+```
+
+## Remove Id and Time columns
+The goal is detect if the exercise is being done correctly or not based on the detected device data. In this goal, when the data was collected or who is the user should not affect the result.
+
+```{r remove Id columns}
+fieldsToRemove <- c("X", "user_name", "raw_timestamp_part_1", "raw_timestamp_part_2", "cvtd_timestamp", "new_window", "num_window")
+trainData <- trainData[ , !(colnames(trainData) %in% fieldsToRemove)]
+cat("id columns removed")
+```
+
+## Separate Validation Data
+The train data is separated among the train dataset that will be used to train the models and the validation dataset that will be used to validate the accuracy of the created model. In this project the train dataset will use 90% of the rows of the train data and the remain 10% will be used on the validation dataset.
+
+```{r create_validation_data}
+set.seed(123)
+targetFields <- c("classe")
+
+trainDataRows               <- createDataPartition(y = trainData$classe, p = 0.9, list = FALSE)
+
+trainDataset                <- trainData[ trainDataRows,]
+trainDatasetPredictors      <- trainData[ trainDataRows, !(colnames(trainData) %in% targetFields)]
+trainDatasetTarget          <- factor(trainData[ trainDataRows, ]$classe)
+
+validationDataset           <- trainData[-trainDataRows,]
+validationDatasetPredictors <- trainData[-trainDataRows, !(colnames(trainData) %in% targetFields)]
+validationDatasetTarget     <- factor(trainData[-trainDataRows, ]$classe)
+
+cat(paste("train dataset have ",nrow(trainDataset),"rows"),"\n")
+cat(paste("validation dataset have ",nrow(validationDataset),"rows"),"\n")
+cat(paste("test dataset have ",nrow(testData),"rows"),"\n")
+```
+
+## Creating Models
+```{r creating_models}
+set.seed(123)
+folds = 3
+modelTrainControl <- trainControl(
+  method = "cv",             # for “cross-validation”
+  number = folds,            # number of k-folds
+  returnResamp = 'final',
+  classProb = TRUE,
+  returnData = FALSE,
+  savePredictions = FALSE,
+  verboseIter = TRUE,
+  allowParallel = TRUE,
+  index=createFolds(trainDataset$classe,k=folds)
+)
+
+preProcess=c("pca","center","scale")
+modelFitBag                  <- train(classe ~ ., data = trainDataset, method = "treebag", preProcess = preProcess, trControl=modelTrainControl)
+modelKNearestNeighbor        <- train(classe ~ ., data = trainDataset, method = "knn",     preProcess = preProcess, trControl=modelTrainControl)
+modelRecursivePartition      <- train(classe ~ ., data = trainDataset, method = "rpart",   preProcess = preProcess, trControl=modelTrainControl)
+modelGradientBoostingMachine <- train(classe ~ ., data = trainDataset, method = "gbm",     preProcess = preProcess, trControl=modelTrainControl)
+modelRandomForest            <- train(classe ~ ., data = trainDataset, method = "rf",      preProcess = preProcess, trControl=modelTrainControl)
+
+allModels <- list(
+  modelFitBag, 
+  modelKNearestNeighbor, 
+  modelRecursivePartition, 
+  modelGradientBoostingMachine, 
+  modelRandomForest
+)
+names(allModels) <- sapply(allModels, function(x) x$method)
+sort(sapply(allModels, function(x) x$results$Accuracy[length(x$results$Accuracy)]),decreasing = TRUE)
+```
+```{r combine_models}
+summaryModels <- resamples(
+  list(
+    fitBag=modelFitBag,
+    knm=modelKNearestNeighbor, 
+    rpart=modelRecursivePartition, 
+    gbm=modelGradientBoostingMachine,
+    rf=modelRandomForest
+  )
+)
+summary(summaryModels)
+bwplot(summaryModels)
+```
+
+## Confusion Matrix for each Model
+
+```{r apply_model_on_validation, results='asis', echo=TRUE}
+getAccuracy <- function(model) {
+  return(model$result$Accuracy[length(model$result$Accuracy)])
+}
+allModels.prediction <- list()
+setNumberPrecision <- function(x, k) trimws(format(round(x, k), nsmall=k))
+
+printConfusion <- function(currentConfusionMatrix, modelName) {
+  confusionMatrixAsDataFrame <- data.frame(currentConfusionMatrix$table)
+  confmatrix_df <- data.frame(currentConfusionMatrix$table)
+  plotConfSquares <- ggplot(confmatrix_df) + geom_tile(aes(x=Prediction, y=Reference, fill=Freq))
+
+  cat("### Model ",modelName,"\n")
+  currentModel <- allModels[modelName]
+
+  label <- paste('Confusion Matrix of model',modelName)
+  cat(paste0("#### ",label,"\n\n"))
+  cat(paste0(kable(currentConfusionMatrix$table,digits = 4) %>%
+    kable_styling(bootstrap_options = "striped", full_width = F, position = "center"),collapse="\n"))
+  
+  cat(paste0("\n\n\n#### Overall Statistics of model ",modelName,"\n\n"))
+  numberDigits <- 4
+  tableColumns <- c("Accuracy","95% CI","No Information Rate","Kappa","Mcnemar's Test P-Value")
+  tableValues <- c(
+    setNumberPrecision(currentConfusionMatrix$overall[["Accuracy"]], numberDigits),       # Accuracy
+    paste0(                                                                               # Confidence Interval of accuracy
+      "(",
+      setNumberPrecision(currentConfusionMatrix$overall[["AccuracyLower"]], numberDigits),
+      ", ", 
+      setNumberPrecision(currentConfusionMatrix$overall[["AccuracyUpper"]], numberDigits),
+      ")"
+    ),
+    setNumberPrecision(currentConfusionMatrix$overall[["AccuracyPValue"]], numberDigits), # no information rate
+    setNumberPrecision(currentConfusionMatrix$overall[["Kappa"]], numberDigits),          # kappa
+    setNumberPrecision(currentConfusionMatrix$overall[["McnemarPValue"]], numberDigits)   # Mcnemar's Test P-Value
+  )
+  tableStatistics <- data.frame(statistics = tableColumns, values = tableValues)
+  cat(paste0(kable(tableStatistics,digits = 4) %>%
+    kable_styling(bootstrap_options = "striped", full_width = F, position = "center"),collapse="\n"))
+
+  label <- paste('Statistics by Class of model',modelName)
+  cat(paste0("\n\n\n#### ",label,"\n\n"))
+  cat(paste0(knitr::kable(currentConfusionMatrix$byClass,digits = 4) %>%
+    kable_styling(bootstrap_options = "striped", full_width = F, position = "left", font_size = 11),collapse="\n"))
+  cat('\n\n')
+  
+  print(plotConfSquares)
+  cat('\n\n')
+  if(modelName=="rpart"){
+    fancyRpartPlot(currentModel$rpart$finalModel)
+  }  
+  if(modelName=="rf"){
+    randomForestError <- gg_error(currentModel$rf$finalModel)
+    print(plot(randomForestError))
+  }
+  cat('\n\n')
+}
+
+for(modelName in names(allModels)) {
+  set.seed(123)
+  currentModel <- allModels[modelName]
+  predictedClasse <- predict(currentModel,validationDataset)
+  allModels.prediction[[modelName]] <- predictedClasse
+  currentConfusionMatrix <- confusionMatrix(predictedClasse[[modelName]], as.factor(validationDataset$classe))
+  printConfusion(currentConfusionMatrix, modelName)
+}
+```
+
+## Voting Mechanism
+
+Now, let's combine all the models that have a accuracy bigger or equal than the minimal 80% and make them vote using the accuracy of each model as weight.
+
+```{r create_voting_mechanism, echo=TRUE, results='asis'}
+voting <- function(data) {
+  # Any model with worse accuracy than this, should not be considered on the voting ( score = 0 )
+  MIN_ACCURACY = 0.8
+  
+  predictions <- list()
+  predictions.accuracy <- list()
+  sumAccuracy <- 0
+  for(modelName in names(allModels)) {
+    set.seed(123)
+    currentModel <- allModels[modelName][[modelName]]
+    predictions[[modelName]] <- predict(currentModel,data)
+    predictions.accuracy[[modelName]] <- ifelse(
+      getAccuracy(currentModel) > MIN_ACCURACY, # filter by accuracy over the threshold
+      getAccuracy(currentModel), 
+      0
+    )
+    sumAccuracy <- sumAccuracy + predictions.accuracy[[modelName]]
+  }
+  predictions <- data.frame(predictions)
+  predictions.accuracy <- data.frame(predictions.accuracy)
+  possibleValues <- unique(trainData$classe)
+  scoreByValue <- list()
+  # calculate the score for each possible value
+  for(possibleValue in possibleValues) {
+    columnName <-paste0("score",possibleValue)
+    # get the score only of the rows where the 
+    # value is the current value, sum them
+    # and divide by the sumAccuracy
+    scoreByValue[[columnName]] <- rowSums(
+      t(t(predictions == possibleValue) * as.numeric(predictions.accuracy[1,]))
+    ) / sumAccuracy
+  }  
+  # replace null values by zero
+  votingData <- as.data.frame(scoreByValue)
+  for(possibleValue in possibleValues) {
+    columnName <-paste0("score",possibleValue)
+    votingData[ is.na(columnName), columnName ] <- c(0)
+  }  
+  # calculate the max value by each row
+  votingData$maxScore <- apply(votingData,1,max)
+  # vote in the value with the max value
+  votingData$voted <- c()
+  for(possibleValue in possibleValues) {
+    columnName <-paste0("score",possibleValue)
+    votingData[votingData[[columnName]] == votingData$maxScore, "voted"] <- possibleValue
+  }
+  votingData$classe <- data$classe
+  return(votingData)
+}
+votedValidation <- voting(validationDataset)
+votingConfusionMatrix <- confusionMatrix(as.factor(votedValidation$voted),as.factor(validationDataset$classe))
+printConfusion(votingConfusionMatrix, "voting")
+```
+
+## Choosing the final Model
+
+The voting process show a good result and because it is combining different approachs it is more hard to have the same type of overfitting.
+
+## Show prediction on Test Data
+```{r apply_on_test_data}
+predictSamples <- voting(testData)
+knitr::kable(predictSamples,caption='predicting classe of the test data based on the model',align = "c") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+cat(predictSamples$voted)
+```
+
+## Conclusion
+
+The final model used is a voting from the best models created from the data. The accuracy of the voting model on the test data was very good but not as good as on the validation dataset, as expected.
+
+## Biografy
+
+[1] Velloso, E.; Bulling, A.; Gellersen, H.; Ugulino, W.; Fuks, H. [Qualitative Activity Recognition of Weight Lifting Exercises](http://groupware.les.inf.puc-rio.br/public/papers/2013.Velloso.QAR-WLE.pdf). Proceedings of 4th International Conference in Cooperation with SIGCHI (Augmented Human '13) . Stuttgart, Germany: ACM SIGCHI, 2013.

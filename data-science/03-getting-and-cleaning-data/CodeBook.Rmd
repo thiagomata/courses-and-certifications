@@ -1,0 +1,399 @@
+# Experiment Description Data
+
+# Experiment Values Data
+
+The features selected for this database come from the accelerometer and gyroscope 3-axial raw signals calculated.time-XYZ and calculated.time.gyro-XYZ. These time domain signals (prefix 'time' to denote time) were captured at a constant rate of 50 Hz. Then they were filtered using a median filter and a 3rd order low pass Butterworth filter with a corner frequency of 20 Hz to remove noise. Similarly, the acceleration signal was then separated into body and gravity acceleration signals (calculated.time.body.Acc-XYZ and calculated.time.gravityAcc-XYZ) using another low pass Butterworth filter with a corner frequency of 0.3 Hz. 
+
+Subsequently, the body linear acceleration and angular velocity were derived in time to obtain Jerk signals (calculated.time.body.AccJerk-XYZ and calculated.time.body.GyroJerk-XYZ). Also the magnitude of these three-dimensional signals were calculated using the Euclidean norm (calculated.time.body.AccMag, calculated.time.gravityAccMag, calculated.time.body.AccJerkMag, calculated.time.body.GyroMag, calculated.time.body.GyroJerkMag). 
+
+Finally a Fast Fourier Transform (FFT) was applied to some of these signals producing calculated.frequency.body.Acc-XYZ, calculated.frequency.body.AccJerk-XYZ, calculated.frequency.body.Gyro-XYZ, calculated.frequency.body.AccJerkMag, calculated.frequency.body.GyroMag, calculated.frequency.body.GyroJerkMag. (Note the 'frequency' to indicate frequency domain signals). 
+
+These signals were used to estimate variables of the feature vector for each pattern:  
+'-XYZ' is used to denote 3-axial signals in the X, Y and Z directions.
+
+## Define Constants
+
+```{r const}
+# Name of directory of the unzip data from url
+dataset.directory <-'UCI HAR Dataset'
+
+# Directory where the data should be downloaded
+setwd( '~' )
+dataset.download.dir <- getwd()
+```
+
+## Load Tidy File
+```{r loadfile}
+tidy.file       <- file.path( dataset.download.dir, 'tidy_data.txt')
+classes <- rep( "numeric", 68 )
+classes[1:2] <- "factor" 
+tidy.data       <- read.table(
+  tidy.file,
+  stringsAsFactors=FALSE,
+  header=TRUE,
+  colClasses=classes
+)
+```
+
+## overview
+```{r overview_names}
+names( tidy.data )
+```
+```{r overview_str}
+str( tidy.data )
+```
+## subject
+
+Id of the Person under the experiment
+
+```{r subject_values}
+unique(tidy.data$subject)
+summary(tidy.data$subject)
+```
+
+## activity
+
+Type of activity in pratice. 
+
+Values:
+```{r activity_values}
+unique(tidy.data$activity)
+summary(tidy.data$activity)
+```
+
+## Time Body accelerometer mean and standard deviation x-y-z
+
+* calculated.time.bodyacc.mean.x
+```{r summary_calculated_time_bodyacc_mean_x}
+summary(tidy.data$calculated.time.bodyacc.mean.x)
+```
+* calculated.time.bodyacc.mean.y
+```{r summary_calculated_time_bodyacc_mean_y}
+summary(tidy.data$calculated.time.bodyacc.mean.y)
+```
+* calculated.time.bodyacc.mean.z
+```{r summary_calculated_time_bodyacc_mean_z}
+summary(tidy.data$calculated.time.bodyacc.mean.z)
+```
+* calculated.time.bodyacc.std.x
+```{r summary_calculated_time_bodyacc_std_x}
+summary(tidy.data$calculated.time.bodyacc.std.x)
+```
+* calculated.time.bodyacc.std.y
+```{r summary_calculated_time_bodyacc_std_y}
+summary(tidy.data$calculated.time.bodyacc.std.y)
+```
+* calculated.time.bodyacc.std.z
+```{r summary_calculated_time_bodyacc_std_z}
+summary(tidy.data$calculated.time.bodyacc.std.z)
+```
+## Frequence Body accelerometer mean and standard deviation x-y-z
+
+* calculated.frequency.bodyacc.mean.x
+```{r sumary_calculated.frequency.bodyacc.mean.x}
+summary(tidy.data$calculated.frequency.bodyacc.mean.x)
+```
+* calculated.frequency.bodyacc.mean.y
+```{r sumary_calculated.frequency.bodyacc.mean.y}
+summary(tidy.data$calculated.frequency.bodyacc.mean.y)
+```
+* calculated.frequency.bodyacc.mean.z
+```{r sumary_calculated.frequency.bodyacc.mean.z}
+summary(tidy.data$calculated.frequency.bodyacc.mean.z)
+```
+* calculated.frequency.bodyacc.std.x
+```{r sumary_calculated.frequency.bodyacc.std.x}
+summary(tidy.data$calculated.frequency.bodyacc.std.x)
+```
+* calculated.frequency.bodyacc.std.y
+```{r sumary_calculated.frequency.bodyacc.std.y}
+summary(tidy.data$calculated.frequency.bodyacc.std.y)
+```
+* calculated.frequency.bodyacc.std.z
+```{r sumary_calculated.frequency.bodyacc.std.z}
+summary(tidy.data$calculated.frequency.bodyacc.std.z)
+```
+
+## Time Body gravity acceleration signals mean and standard deviation x-y-z
+
+* calculated.time.gravityacc.mean.x
+```{r_summary_calculated.time.gravityacc.mean.x}
+summary(tidy.data$calculated.time.gravityacc.mean.x)
+```
+* calculated.time.gravityacc.mean.y
+```{r_summary_calculated.time.gravityacc.mean.y}
+summary(tidy.data$calculated.time.gravityacc.mean.y)
+```
+* calculated.time.gravityacc.mean.z
+```{r_summary_calculated.time.gravityacc.mean.z}
+summary(tidy.data$calculated.time.gravityacc.mean.z)
+```
+* calculated.time.gravityacc.std.x
+```{r_summary_calculated.time.gravityacc.std.x}
+summary(tidy.data$calculated.time.gravityacc.std.x)
+```
+* calculated.time.gravityacc.std.y
+```{r_summary_calculated.time.gravityacc.std.y}
+summary(tidy.data$calculated.time.gravityacc.std.y)
+```
+* calculated.time.gravityacc.std.z
+```{r_summary_calculated.time.gravityacc.std.z}
+summary(tidy.data$calculated.time.gravityacc.std.z)
+```
+
+## Time Body accelerometer mean and standard deviation of Jerk Signal x-y-z
+
+* calculated.time.bodyaccjerk.mean.x
+```{r summary_calculated.time.bodyaccjerk.mean.x}
+summary(tidy.data$calculated.time.bodyaccjerk.mean.x)
+```
+* calculated.time.bodyaccjerk.mean.y
+```{r summary_calculated.time.bodyaccjerk.mean.y}
+summary(tidy.data$calculated.time.bodyaccjerk.mean.y)
+```
+* calculated.time.bodyaccjerk.mean.z
+```{r summary_calculated.time.bodyaccjerk.mean.z}
+summary(tidy.data$calculated.time.bodyaccjerk.mean.z)
+```
+* calculated.time.bodyaccjerk.std.x
+```{r summary_calculated.time.bodyaccjerk.std.x}
+summary(tidy.data$calculated.time.bodyaccjerk.std.x)
+```
+* calculated.time.bodyaccjerk.std.y
+```{r summary_calculated.time.bodyaccjerk.std.y}
+summary(tidy.data$calculated.time.bodyaccjerk.std.y)
+```
+* calculated.time.bodyaccjerk.std.z
+```{r summary_calculated.time.bodyaccjerk.std.z}
+summary(tidy.data$calculated.time.bodyaccjerk.std.z)
+```
+
+## Frequency Body accelerometer mean and standard deviation of Jerk Signal x-y-z
+
+* calculated.frequency.bodyaccjerk.mean.x
+```{r summary_calculated.frequency.bodyaccjerk.mean.x}
+summary(tidy.data$calculated.frequency.bodyaccjerk.mean.x)
+```
+* calculated.frequency.bodyaccjerk.mean.y
+```{r summary_calculated.frequency.bodyaccjerk.mean.y}
+summary(tidy.data$calculated.frequency.bodyaccjerk.mean.y)
+```
+* calculated.frequency.bodyaccjerk.mean.z
+```{r summary_calculated.frequency.bodyaccjerk.mean.z}
+summary(tidy.data$calculated.frequency.bodyaccjerk.mean.z)
+```
+* calculated.frequency.bodyaccjerk.std.x
+```{r summary_calculated.frequency.bodyaccjerk.std.x}
+summary(tidy.data$calculated.frequency.bodyaccjerk.std.x)
+```
+* calculated.frequency.bodyaccjerk.std.y
+```{r summary_calculated.frequency.bodyaccjerk.std.y}
+summary(tidy.data$calculated.frequency.bodyaccjerk.std.y)
+```
+* calculated.frequency.bodyaccjerk.std.z
+```{r summary_calculated.frequency.bodyaccjerk.std.z}
+summary(tidy.data$calculated.frequency.bodyaccjerk.std.z)
+```
+
+## Time Body gyroscope mean and standard deviation x-y-z
+
+* calculated.time.bodygyro.mean.x
+```{r summary_calculated.time.bodygyro.mean.x}
+summary(tidy.data$calculated.time.bodygyro.mean.x)
+```
+* calculated.time.bodygyro.mean.y
+```{r summary_calculated.time.bodygyro.mean.y}
+summary(tidy.data$calculated.time.bodygyro.mean.y)
+```
+* calculated.time.bodygyro.mean.z
+```{r summary_calculated.time.bodygyro.mean.z}
+summary(tidy.data$calculated.time.bodygyro.mean.z)
+```
+* calculated.time.bodygyro.std.x
+```{r summary_calculated.time.bodygyro.std.x}
+summary(tidy.data$calculated.time.bodygyro.std.x)
+```
+* calculated.time.bodygyro.std.y
+```{r summary_calculated.time.bodygyro.std.y}
+summary(tidy.data$calculated.time.bodygyro.std.y)
+```
+* calculated.time.bodygyro.std.z
+```{r summary_calculated.time.bodygyro.std.z}
+summary(tidy.data$calculated.time.bodygyro.std.z)
+```
+
+## Frequency Body gyroscope mean and standard deviation x-y-z
+
+* calculated.frequency.bodygyro.mean.x
+```{r summary_calculated.frequency.bodygyro.mean.x}
+summary(tidy.data$calculated.frequency.bodygyro.mean.x)
+```
+* calculated.frequency.bodygyro.mean.y
+```{r summary_calculated.frequency.bodygyro.mean.y}
+summary(tidy.data$calculated.frequency.bodygyro.mean.y)
+```
+* calculated.frequency.bodygyro.mean.z
+```{r summary_calculated.frequency.bodygyro.mean.z}
+summary(tidy.data$calculated.frequency.bodygyro.mean.z)
+```
+* calculated.frequency.bodygyro.std.x
+```{r summary_calculated.frequency.bodygyro.std.x}
+summary(tidy.data$calculated.frequency.bodygyro.std.x)
+```
+* calculated.frequency.bodygyro.std.y
+```{r summary_calculated.frequency.bodygyro.std.y}
+summary(tidy.data$calculated.frequency.bodygyro.std.y)
+```
+* calculated.frequency.bodygyro.std.z
+```{r summary_calculated.frequency.bodygyro.std.z}
+summary(tidy.data$calculated.frequency.bodygyro.std.z)
+```
+
+## Time Body gyroscope mean and standard deviation of Jeark Signal x-y-z
+
+* calculated.time.bodygyrojerk.mean.x
+```{r summary_calculated.time.bodygyrojerk.mean.x}
+summary(tidy.data$calculated.time.bodygyrojerk.mean.x)
+```
+* calculated.time.bodygyrojerk.mean.y
+```{r summary_calculated.time.bodygyrojerk.mean.y}
+summary(tidy.data$calculated.time.bodygyrojerk.mean.y)
+```
+* calculated.time.bodygyrojerk.mean.z
+```{r summary_calculated.time.bodygyrojerk.mean.z}
+summary(tidy.data$calculated.time.bodygyrojerk.mean.z)
+```
+* calculated.time.bodygyrojerk.std.x
+```{r summary_calculated.time.bodygyrojerk.std.x}
+summary(tidy.data$calculated.time.bodygyrojerk.std.x)
+```
+* calculated.time.bodygyrojerk.std.y
+```{r summary_calculated.time.bodygyrojerk.std.y}
+summary(tidy.data$calculated.time.bodygyrojerk.std.y)
+```
+* calculated.time.bodygyrojerk.std.z
+```{r summary_calculated.time.bodygyrojerk.std.z}
+summary(tidy.data$calculated.time.bodygyrojerk.std.z)
+```
+
+## Time Body accelerometer magnitude mean and standard deviation
+
+* calculated.time.bodyaccmag.mean
+```{r summary_calculated.time.bodyaccmag.mean}
+summary(tidy.data$calculated.time.bodyaccmag.mean)
+```
+* calculated.time.bodyaccmag.std
+```{r summary_calculated.time.bodyaccmag.std}
+summary(tidy.data$calculated.time.bodyaccmag.std)
+```
+
+## Frequency Body accelerometer magnitude mean and standard deviation
+
+* calculated.frequency.bodyaccmag.mean
+```{r summary_calculated.frequency.bodyaccmag.mean}
+summary(tidy.data$calculated.frequency.bodyaccmag.mean)
+```
+* calculated.frequency.bodyaccmag.std
+```{r summary_calculated.frequency.bodyaccmag.std}
+summary(tidy.data$calculated.frequency.bodyaccmag.std)
+```
+
+
+## Time Gravity accelerometer magnitude mean and standard deviation
+
+* calculated.time.gravityaccmag.mean
+```{r summary_calculated.time.gravityaccmag.mean}
+summary(tidy.data$calculated.time.gravityaccmag.mean)
+```
+* calculated.time.gravityaccmag.std
+```{r summary_calculated.time.gravityaccmag.std}
+summary(tidy.data$calculated.time.gravityaccmag.std)
+```
+
+## Time Body acceleromenter jerk magnitude mean and standard deviation
+
+* calculated.time.bodyaccjerkmag.mean
+```{r summary_calculated.time.bodyaccjerkmag.mean}
+summary(tidy.data$calculated.time.bodyaccjerkmag.mean)
+```
+* calculated.time.bodyaccjerkmag.std
+```{r summary_calculated.time.bodyaccjerkmag.std}
+summary(tidy.data$calculated.time.bodyaccjerkmag.std)
+```
+
+## Frequency Body acceleromenter jerk magnitude mean and standard deviation
+
+* calculated.frequency.bodyaccjerkmag.mean
+```{r summary_calculated.frequency.bodyaccjerkmag.mean}
+summary(tidy.data$calculated.frequency.bodyaccjerkmag.mean)
+```
+* calculated.frequency.bodyaccjerkmag.std
+```{r summary_calculated.frequency.bodyaccjerkmag.std}
+summary(tidy.data$calculated.frequency.bodyaccjerkmag.std)
+```
+
+## Time Body of gyroscope magnitude mean and standard deviation
+
+* calculated.time.bodygyromag.mean
+```{r summary_calculated.time.bodygyromag.mean}
+summary(tidy.data$calculated.time.bodygyromag.mean)
+```
+* calculated.time.bodygyromag.std
+```{r summary_calculated.time.bodygyromag.std}
+summary(tidy.data$calculated.time.bodygyromag.std)
+```
+
+## Frequency Body of gyroscope magnitude mean and standard deviation
+
+* calculated.frequency.bodygyromag.mean
+```{r summary_calculated.frequency.bodygyromag.mean}
+summary(tidy.data$calculated.frequency.bodygyromag.mean)
+```
+* calculated.frequency.bodygyromag.std
+```{r summary_calculated.frequency.bodygyromag.std}
+summary(tidy.data$calculated.frequency.bodygyromag.std)
+```
+
+## Time Body of gyroscope jerk magnitude mean and standard deviation
+
+* calculated.time.bodygyrojerkmag.mean
+```{r summary_calculated.time.bodygyrojerkmag.mean}
+summary(tidy.data$calculated.time.bodygyrojerkmag.mean)
+```
+* calculated.time.bodygyrojerkmag.std
+```{r summary_calculated.time.bodygyrojerkmag.std}
+summary(tidy.data$calculated.time.bodygyrojerkmag.std)
+```
+
+## Frequency Body of gyroscope jerk magnitude mean and standard deviation
+
+* calculated.frequency.bodygyrojerkmag.mean
+```{r summary_calculated.frequency.bodygyrojerkmag.mean}
+summary(tidy.data$calculated.frequency.bodygyrojerkmag.mean)
+```
+* calculated.frequency.bodygyrojerkmag.std
+```{r summary_calculated.frequency.bodygyrojerkmag.std}
+summary(tidy.data$calculated.frequency.bodygyrojerkmag.std)
+```
+
+The set of variables that were estimated from these signals are: 
+
+```
+mean(): Mean value
+std(): Standard deviation
+mad(): Median absolute deviation 
+max(): Largest value in array
+min(): Smallest value in array
+sma(): Signal magnitude area
+energy(): Energy measure. Sum of the squares divided by the number of values. 
+iqr(): Interquartile range 
+entropy(): Signal entropy
+arCoeff(): Autorregresion coefficients with Burg order equal to 4
+correlation(): correlation coefficient between two signals
+maxInds(): index of the frequency component with largest magnitude
+meanFreq(): Weighted average of the frequency components to obtain a mean frequency
+skewness(): skewness of the frequency domain signal 
+kurtosis(): kurtosis of the frequency domain signal 
+bandsEnergy(): Energy of a frequency interval within the 64 bins of the FFT of each window.
+angle(): Angle between to vectors.
+```

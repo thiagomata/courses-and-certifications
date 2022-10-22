@@ -1,0 +1,1303 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Pratical Machine Learning - Course Project},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Pratical Machine Learning - Course Project}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{}
+    \preauthor{}\postauthor{}
+    \date{}
+    \predate{}\postdate{}
+  
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+
+\begin{document}
+\maketitle
+
+\subsection{Introduction}\label{introduction}
+
+Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now
+possible to collect a large amount of data about personal activity. One
+thing that people regularly do is quantify how much of a particular
+activity they do, but they rarely quantify how well they do it.
+
+In this
+\href{https://www.coursera.org/learn/practical-machine-learning/supplement/PvInj/course-project-instructions-read-first}{project},
+the goal is creating a model to predict the manner in which they did the
+exercise. To do so, we are going to use the data from the study about
+\href{http://groupware.les.inf.puc-rio.br/public/papers/2013.Velloso.QAR-WLE.pdf}{Qualitative
+Activity Recognition of Weight Lifting Exercises} {[}1{]} that register
+the accelerometers on the belt, forearm, arm, and dumbell of 6
+participants. In this study, the participants were asked to perform
+barbell lifts correctly and incorrectly in 5 different ways. More
+information about this data is available on and more details about it
+can be access by this website
+\url{http://groupware.les.inf.puc-rio.br/har}, in the section on the
+Weight Lifting Exercise Dataset.
+
+\subsection{Assignment}\label{assignment}
+
+As said previously, the goal of your project is to predict the manner in
+which they did the exercise. This is the ``classe'' variable in the
+training set. To do so, it is allowed to use any of the other variables
+to predict with. This paper must report how built the created model, how
+were used the cross validation, what is the expected out of sample
+error, and the cause of the choices maded. After that, it must present
+the prediction result of the model over 20 different test cases.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{options}\NormalTok{(}\DataTypeTok{scipen=}\DecValTok{999}\NormalTok{)         }\CommentTok{# make the number printer more readable}
+\KeywordTok{Sys.setenv}\NormalTok{(}\DataTypeTok{LANG =} \StringTok{"en"}\NormalTok{)     }\CommentTok{# show messages on english}
+\KeywordTok{Sys.setenv}\NormalTok{(}\DataTypeTok{LANGUAGE =} \StringTok{"en"}\NormalTok{) }\CommentTok{# show messages on english}
+\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list=}\KeywordTok{ls}\NormalTok{())               }\CommentTok{# remove other data from env, if any}
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)               }\CommentTok{# set a seed to ensure get always the same results}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Data}\label{data}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{trainDataLink <-}\StringTok{ 'https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv'}
+\NormalTok{trainDataFile <-}\StringTok{ 'pml-training.csv'}\NormalTok{;}
+\NormalTok{testDataLink  <-}\StringTok{ 'https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv'}
+\NormalTok{testDataFile  <-}\StringTok{ 'pml-testing'}\NormalTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+The data for this assignment is divided among
+\href{https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv}{trainng
+data} and
+\href{https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv}{test
+data}:
+
+\subsection{Loading Libraries}\label{loading-libraries}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# loading required libraries}
+\CommentTok{# install.packages(c("devtools", "knitr","ggplot2","data.table","caret",}
+\CommentTok{#   "doParallel","e1071","rpart","rpart.plot","rattle","gridExtra","kableExtra", "ggRandomForests"), dependencies = TRUE)}
+\KeywordTok{library}\NormalTok{(}\StringTok{'knitr'}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{'ggplot2'}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{'data.table'}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{'caret'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: lattice
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(}\StringTok{'devtools'}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{'doParallel'}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: foreach
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: iterators
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: parallel
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(}\StringTok{'e1071'}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{'rattle'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rattle: A free graphical interface for data science with R.
+## Version 5.2.0 Copyright (c) 2006-2018 Togaware Pty Ltd.
+## Type 'rattle()' to shake, rattle, and roll your data.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(}\StringTok{'rpart'}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{'rpart.plot'}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{'gridExtra'}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{'kableExtra'}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(}\StringTok{'ggRandomForests'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: randomForestSRC
+\end{verbatim}
+
+\begin{verbatim}
+## 
+##  randomForestSRC 2.8.0 
+##  
+##  Type rfsrc.news() to see new features, changes, and bug fixes. 
+## 
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'randomForestSRC'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:e1071':
+## 
+##     impute, tune
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'ggRandomForests'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:randomForestSRC':
+## 
+##     partial.rfsrc
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{registerDoParallel}\NormalTok{(}\DataTypeTok{cores=}\DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Loading and preprocessing the
+data}\label{loading-and-preprocessing-the-data}
+
+Download the data and load it into data.table.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ ( }\OperatorTok{!}\KeywordTok{file.exists}\NormalTok{(trainDataFile) ) \{}
+  \KeywordTok{download.file}\NormalTok{(trainDataLink, trainDataFile)}
+\NormalTok{\}}
+\ControlFlowTok{if}\NormalTok{ ( }\OperatorTok{!}\KeywordTok{file.exists}\NormalTok{(testDataFile) ) \{}
+  \KeywordTok{download.file}\NormalTok{(testDataLink, testDataFile)}
+\NormalTok{\}}
+\NormalTok{trainData <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{( trainDataFile, }\DataTypeTok{na.strings=}\KeywordTok{c}\NormalTok{(}\StringTok{'#DIV/0!'}\NormalTok{, }\StringTok{''}\NormalTok{, }\StringTok{'NA'}\NormalTok{), }\DataTypeTok{stringsAsFactors =} \OtherTok{FALSE}\NormalTok{)}
+\NormalTok{testData  <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{( testDataFile,  }\DataTypeTok{na.strings=}\KeywordTok{c}\NormalTok{(}\StringTok{'#DIV/0!'}\NormalTok{, }\StringTok{''}\NormalTok{, }\StringTok{'NA'}\NormalTok{), }\DataTypeTok{stringsAsFactors =} \OtherTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Removing Null Columns}\label{removing-null-columns}
+
+Remove all columns with 97\% or more rows with null values.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{MAX_PERCENT_OF_NA_VALUES =}\StringTok{ }\FloatTok{0.97}
+\NormalTok{fields <-}\StringTok{ }\KeywordTok{names}\NormalTok{(trainData)}
+\NormalTok{size <-}\KeywordTok{nrow}\NormalTok{(trainData)}
+\NormalTok{fieldsToRemove <-}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+
+\ControlFlowTok{for}\NormalTok{(field }\ControlFlowTok{in}\NormalTok{ fields) \{}
+\NormalTok{  column <-}\StringTok{ }\NormalTok{trainData[[field]]}
+\NormalTok{  percentOfNA <-}\StringTok{ }\NormalTok{( (}\KeywordTok{length}\NormalTok{(column[}\KeywordTok{is.na}\NormalTok{(column)])) }\OperatorTok{/}\StringTok{ }\NormalTok{size )}
+  \ControlFlowTok{if}\NormalTok{( percentOfNA }\OperatorTok{>=}\StringTok{ }\NormalTok{MAX_PERCENT_OF_NA_VALUES ) \{}
+\NormalTok{    fieldsToRemove[}\KeywordTok{length}\NormalTok{(fieldsToRemove)}\OperatorTok{+}\DecValTok{1}\NormalTok{] <-}\StringTok{ }\NormalTok{field;}
+\NormalTok{  \}}
+\NormalTok{\}}
+\KeywordTok{print}\NormalTok{(}\KeywordTok{paste}\NormalTok{(}\StringTok{"removing these fields for having to many empty values: ("}\NormalTok{,}\KeywordTok{paste}\NormalTok{(fieldsToRemove, }\DataTypeTok{collapse =} \StringTok{', '}\NormalTok{),}\StringTok{")"}\NormalTok{));}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "removing these fields for having to many empty values: ( kurtosis_roll_belt, kurtosis_picth_belt, kurtosis_yaw_belt, skewness_roll_belt, skewness_roll_belt.1, skewness_yaw_belt, max_roll_belt, max_picth_belt, max_yaw_belt, min_roll_belt, min_pitch_belt, min_yaw_belt, amplitude_roll_belt, amplitude_pitch_belt, amplitude_yaw_belt, var_total_accel_belt, avg_roll_belt, stddev_roll_belt, var_roll_belt, avg_pitch_belt, stddev_pitch_belt, var_pitch_belt, avg_yaw_belt, stddev_yaw_belt, var_yaw_belt, var_accel_arm, avg_roll_arm, stddev_roll_arm, var_roll_arm, avg_pitch_arm, stddev_pitch_arm, var_pitch_arm, avg_yaw_arm, stddev_yaw_arm, var_yaw_arm, kurtosis_roll_arm, kurtosis_picth_arm, kurtosis_yaw_arm, skewness_roll_arm, skewness_pitch_arm, skewness_yaw_arm, max_roll_arm, max_picth_arm, max_yaw_arm, min_roll_arm, min_pitch_arm, min_yaw_arm, amplitude_roll_arm, amplitude_pitch_arm, amplitude_yaw_arm, kurtosis_roll_dumbbell, kurtosis_picth_dumbbell, kurtosis_yaw_dumbbell, skewness_roll_dumbbell, skewness_pitch_dumbbell, skewness_yaw_dumbbell, max_roll_dumbbell, max_picth_dumbbell, max_yaw_dumbbell, min_roll_dumbbell, min_pitch_dumbbell, min_yaw_dumbbell, amplitude_roll_dumbbell, amplitude_pitch_dumbbell, amplitude_yaw_dumbbell, var_accel_dumbbell, avg_roll_dumbbell, stddev_roll_dumbbell, var_roll_dumbbell, avg_pitch_dumbbell, stddev_pitch_dumbbell, var_pitch_dumbbell, avg_yaw_dumbbell, stddev_yaw_dumbbell, var_yaw_dumbbell, kurtosis_roll_forearm, kurtosis_picth_forearm, kurtosis_yaw_forearm, skewness_roll_forearm, skewness_pitch_forearm, skewness_yaw_forearm, max_roll_forearm, max_picth_forearm, max_yaw_forearm, min_roll_forearm, min_pitch_forearm, min_yaw_forearm, amplitude_roll_forearm, amplitude_pitch_forearm, amplitude_yaw_forearm, var_accel_forearm, avg_roll_forearm, stddev_roll_forearm, var_roll_forearm, avg_pitch_forearm, stddev_pitch_forearm, var_pitch_forearm, avg_yaw_forearm, stddev_yaw_forearm, var_yaw_forearm )"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# using the same field list to train and test to avoid different field list}
+\NormalTok{trainData <-}\StringTok{ }\NormalTok{trainData[ , }\OperatorTok{!}\NormalTok{(}\KeywordTok{colnames}\NormalTok{(trainData) }\OperatorTok{%in%}\StringTok{ }\NormalTok{fieldsToRemove)]}
+\NormalTok{testData  <-}\StringTok{ }\NormalTok{testData[  , }\OperatorTok{!}\NormalTok{(}\KeywordTok{colnames}\NormalTok{(testData)  }\OperatorTok{%in%}\StringTok{ }\NormalTok{fieldsToRemove)]}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Replacing Null values by the
+Median}\label{replacing-null-values-by-the-median}
+
+Replace remaing null values by the median or the most common value.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fields <-}\StringTok{ }\KeywordTok{names}\NormalTok{(trainData)}
+\NormalTok{commonValues <-}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+\ControlFlowTok{for}\NormalTok{(field }\ControlFlowTok{in}\NormalTok{ fields) \{}
+\NormalTok{  column <-}\StringTok{ }\NormalTok{trainData[[field]]}
+  \ControlFlowTok{if}\NormalTok{(}\OperatorTok{!}\KeywordTok{is.character}\NormalTok{(column))\{}
+\NormalTok{    new_value <-}\StringTok{ }\KeywordTok{median}\NormalTok{(column)}
+\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
+\NormalTok{    new_value <-}\StringTok{ }\KeywordTok{names}\NormalTok{(}\KeywordTok{sort}\NormalTok{(}\KeywordTok{table}\NormalTok{(column),}\DataTypeTok{decreasing=}\OtherTok{TRUE}\NormalTok{)[}\DecValTok{1}\NormalTok{]) }
+\NormalTok{  \}}
+\NormalTok{  commonValues[field] <-}\StringTok{ }\NormalTok{new_value;}
+\NormalTok{\}}
+\NormalTok{replaceNullByCommonValues <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(dataframe,commonValues) \{}
+  \ControlFlowTok{for}\NormalTok{(field }\ControlFlowTok{in}\NormalTok{ fields) \{}
+\NormalTok{    column <-}\StringTok{ }\NormalTok{dataframe[[field]]}
+\NormalTok{    totalNull <-}\StringTok{ }\KeywordTok{length}\NormalTok{(column[}\KeywordTok{is.na}\NormalTok{(column)])}
+    \ControlFlowTok{if}\NormalTok{(totalNull }\OperatorTok{>}\StringTok{ }\DecValTok{0}\NormalTok{) \{}
+\NormalTok{      commonValue <-}\StringTok{ }\NormalTok{commonValues[field]}
+      \KeywordTok{print}\NormalTok{(}\KeywordTok{paste}\NormalTok{(}\StringTok{"replacing"}\NormalTok{,totalNull,}\StringTok{" null values on"}\NormalTok{,field,}\StringTok{"by"}\NormalTok{,commonValue))}
+\NormalTok{      column[}\KeywordTok{is.na}\NormalTok{(column)] <-}\StringTok{ }\NormalTok{commonValue}
+\NormalTok{      dataframe[[field]] <-}\StringTok{ }\NormalTok{column}
+\NormalTok{    \}}
+\NormalTok{  \}}
+  \KeywordTok{return}\NormalTok{(dataframe)}
+\NormalTok{\}}
+\NormalTok{trainData <-}\StringTok{ }\KeywordTok{replaceNullByCommonValues}\NormalTok{(trainData,commonValues)}
+\NormalTok{testData  <-}\StringTok{ }\KeywordTok{replaceNullByCommonValues}\NormalTok{(testData,commonValues)}
+\KeywordTok{print}\NormalTok{(}\StringTok{"all the null values where replaced by the common values"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "all the null values where replaced by the common values"
+\end{verbatim}
+
+\subsection{Remove Near Zero Variance
+Columns}\label{remove-near-zero-variance-columns}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{nearZeroVarFields <-}\StringTok{ }\KeywordTok{nearZeroVar}\NormalTok{(trainData, }\DataTypeTok{names =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{trainData <-}\StringTok{ }\NormalTok{trainData[ , }\OperatorTok{!}\NormalTok{(}\KeywordTok{colnames}\NormalTok{(trainData) }\OperatorTok{%in%}\StringTok{ }\NormalTok{nearZeroVarFields)]}
+\ControlFlowTok{if}\NormalTok{( }\KeywordTok{length}\NormalTok{(nearZeroVarFields) }\OperatorTok{>}\StringTok{ }\DecValTok{0}\NormalTok{ ) \{}
+  \KeywordTok{cat}\NormalTok{(}\KeywordTok{paste}\NormalTok{(}\StringTok{"removing these fields for having near zero variance: ("}\NormalTok{,}\KeywordTok{paste}\NormalTok{(nearZeroVarFields, }\DataTypeTok{collapse =} \StringTok{', '}\NormalTok{),}\StringTok{")"}\NormalTok{));  }
+\NormalTok{\} }\ControlFlowTok{else}\NormalTok{ \{}
+  \KeywordTok{cat}\NormalTok{(}\StringTok{"all fields have a acceptable variance"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## removing these fields for having near zero variance: ( new_window )
+\end{verbatim}
+
+\subsection{Remove Id and Time
+columns}\label{remove-id-and-time-columns}
+
+The goal is detect if the exercise is being done correctly or not based
+on the detected device data. In this goal, when the data was collected
+or who is the user should not affect the result.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fieldsToRemove <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"X"}\NormalTok{, }\StringTok{"user_name"}\NormalTok{, }\StringTok{"raw_timestamp_part_1"}\NormalTok{, }\StringTok{"raw_timestamp_part_2"}\NormalTok{, }\StringTok{"cvtd_timestamp"}\NormalTok{, }\StringTok{"new_window"}\NormalTok{, }\StringTok{"num_window"}\NormalTok{)}
+\NormalTok{trainData <-}\StringTok{ }\NormalTok{trainData[ , }\OperatorTok{!}\NormalTok{(}\KeywordTok{colnames}\NormalTok{(trainData) }\OperatorTok{%in%}\StringTok{ }\NormalTok{fieldsToRemove)]}
+\KeywordTok{cat}\NormalTok{(}\StringTok{"id columns removed"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## id columns removed
+\end{verbatim}
+
+\subsection{Separate Validation Data}\label{separate-validation-data}
+
+The train data is separated among the train dataset that will be used to
+train the models and the validation dataset that will be used to
+validate the accuracy of the created model. In this project the train
+dataset will use 90\% of the rows of the train data and the remain 10\%
+will be used on the validation dataset.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{targetFields <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"classe"}\NormalTok{)}
+
+\NormalTok{trainDataRows               <-}\StringTok{ }\KeywordTok{createDataPartition}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ trainData}\OperatorTok{$}\NormalTok{classe, }\DataTypeTok{p =} \FloatTok{0.9}\NormalTok{, }\DataTypeTok{list =} \OtherTok{FALSE}\NormalTok{)}
+
+\NormalTok{trainDataset                <-}\StringTok{ }\NormalTok{trainData[ trainDataRows,]}
+\NormalTok{trainDatasetPredictors      <-}\StringTok{ }\NormalTok{trainData[ trainDataRows, }\OperatorTok{!}\NormalTok{(}\KeywordTok{colnames}\NormalTok{(trainData) }\OperatorTok{%in%}\StringTok{ }\NormalTok{targetFields)]}
+\NormalTok{trainDatasetTarget          <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(trainData[ trainDataRows, ]}\OperatorTok{$}\NormalTok{classe)}
+
+\NormalTok{validationDataset           <-}\StringTok{ }\NormalTok{trainData[}\OperatorTok{-}\NormalTok{trainDataRows,]}
+\NormalTok{validationDatasetPredictors <-}\StringTok{ }\NormalTok{trainData[}\OperatorTok{-}\NormalTok{trainDataRows, }\OperatorTok{!}\NormalTok{(}\KeywordTok{colnames}\NormalTok{(trainData) }\OperatorTok{%in%}\StringTok{ }\NormalTok{targetFields)]}
+\NormalTok{validationDatasetTarget     <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(trainData[}\OperatorTok{-}\NormalTok{trainDataRows, ]}\OperatorTok{$}\NormalTok{classe)}
+
+\KeywordTok{cat}\NormalTok{(}\KeywordTok{paste}\NormalTok{(}\StringTok{"train dataset have "}\NormalTok{,}\KeywordTok{nrow}\NormalTok{(trainDataset),}\StringTok{"rows"}\NormalTok{),}\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## train dataset have  17662 rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cat}\NormalTok{(}\KeywordTok{paste}\NormalTok{(}\StringTok{"validation dataset have "}\NormalTok{,}\KeywordTok{nrow}\NormalTok{(validationDataset),}\StringTok{"rows"}\NormalTok{),}\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## validation dataset have  1960 rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cat}\NormalTok{(}\KeywordTok{paste}\NormalTok{(}\StringTok{"test dataset have "}\NormalTok{,}\KeywordTok{nrow}\NormalTok{(testData),}\StringTok{"rows"}\NormalTok{),}\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## test dataset have  20 rows
+\end{verbatim}
+
+\subsection{Creating Models}\label{creating-models}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{folds =}\StringTok{ }\DecValTok{3}
+\NormalTok{modelTrainControl <-}\StringTok{ }\KeywordTok{trainControl}\NormalTok{(}
+  \DataTypeTok{method =} \StringTok{"cv"}\NormalTok{,             }\CommentTok{# for “cross-validation”}
+  \DataTypeTok{number =}\NormalTok{ folds,            }\CommentTok{# number of k-folds}
+  \DataTypeTok{returnResamp =} \StringTok{'final'}\NormalTok{,}
+  \DataTypeTok{classProb =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{returnData =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{savePredictions =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{verboseIter =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{allowParallel =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{index=}\KeywordTok{createFolds}\NormalTok{(trainDataset}\OperatorTok{$}\NormalTok{classe,}\DataTypeTok{k=}\NormalTok{folds)}
+\NormalTok{)}
+
+\NormalTok{preProcess=}\KeywordTok{c}\NormalTok{(}\StringTok{"pca"}\NormalTok{,}\StringTok{"center"}\NormalTok{,}\StringTok{"scale"}\NormalTok{)}
+\NormalTok{modelFitBag                  <-}\StringTok{ }\KeywordTok{train}\NormalTok{(classe }\OperatorTok{~}\StringTok{ }\NormalTok{., }\DataTypeTok{data =}\NormalTok{ trainDataset, }\DataTypeTok{method =} \StringTok{"treebag"}\NormalTok{, }\DataTypeTok{preProcess =}\NormalTok{ preProcess, }\DataTypeTok{trControl=}\NormalTok{modelTrainControl)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Aggregating results
+## Fitting final model on full training set
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{modelKNearestNeighbor        <-}\StringTok{ }\KeywordTok{train}\NormalTok{(classe }\OperatorTok{~}\StringTok{ }\NormalTok{., }\DataTypeTok{data =}\NormalTok{ trainDataset, }\DataTypeTok{method =} \StringTok{"knn"}\NormalTok{,     }\DataTypeTok{preProcess =}\NormalTok{ preProcess, }\DataTypeTok{trControl=}\NormalTok{modelTrainControl)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Aggregating results
+## Selecting tuning parameters
+## Fitting k = 5 on full training set
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{modelRecursivePartition      <-}\StringTok{ }\KeywordTok{train}\NormalTok{(classe }\OperatorTok{~}\StringTok{ }\NormalTok{., }\DataTypeTok{data =}\NormalTok{ trainDataset, }\DataTypeTok{method =} \StringTok{"rpart"}\NormalTok{,   }\DataTypeTok{preProcess =}\NormalTok{ preProcess, }\DataTypeTok{trControl=}\NormalTok{modelTrainControl)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Aggregating results
+## Selecting tuning parameters
+## Fitting cp = 0.0331 on full training set
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{modelGradientBoostingMachine <-}\StringTok{ }\KeywordTok{train}\NormalTok{(classe }\OperatorTok{~}\StringTok{ }\NormalTok{., }\DataTypeTok{data =}\NormalTok{ trainDataset, }\DataTypeTok{method =} \StringTok{"gbm"}\NormalTok{,     }\DataTypeTok{preProcess =}\NormalTok{ preProcess, }\DataTypeTok{trControl=}\NormalTok{modelTrainControl)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Aggregating results
+## Selecting tuning parameters
+## Fitting n.trees = 150, interaction.depth = 3, shrinkage = 0.1, n.minobsinnode = 10 on full training set
+## Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+##      1        1.6094             nan     0.1000    0.1276
+##      2        1.5310             nan     0.1000    0.0926
+##      3        1.4727             nan     0.1000    0.0735
+##      4        1.4271             nan     0.1000    0.0581
+##      5        1.3906             nan     0.1000    0.0502
+##      6        1.3584             nan     0.1000    0.0460
+##      7        1.3299             nan     0.1000    0.0435
+##      8        1.3014             nan     0.1000    0.0353
+##      9        1.2781             nan     0.1000    0.0338
+##     10        1.2560             nan     0.1000    0.0269
+##     20        1.1055             nan     0.1000    0.0186
+##     40        0.9337             nan     0.1000    0.0088
+##     60        0.8294             nan     0.1000    0.0055
+##     80        0.7509             nan     0.1000    0.0047
+##    100        0.6883             nan     0.1000    0.0036
+##    120        0.6343             nan     0.1000    0.0023
+##    140        0.5882             nan     0.1000    0.0021
+##    150        0.5692             nan     0.1000    0.0015
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{modelRandomForest            <-}\StringTok{ }\KeywordTok{train}\NormalTok{(classe }\OperatorTok{~}\StringTok{ }\NormalTok{., }\DataTypeTok{data =}\NormalTok{ trainDataset, }\DataTypeTok{method =} \StringTok{"rf"}\NormalTok{,      }\DataTypeTok{preProcess =}\NormalTok{ preProcess, }\DataTypeTok{trControl=}\NormalTok{modelTrainControl)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Aggregating results
+## Selecting tuning parameters
+## Fitting mtry = 2 on full training set
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{allModels <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}
+\NormalTok{  modelFitBag, }
+\NormalTok{  modelKNearestNeighbor, }
+\NormalTok{  modelRecursivePartition, }
+\NormalTok{  modelGradientBoostingMachine, }
+\NormalTok{  modelRandomForest}
+\NormalTok{)}
+\KeywordTok{names}\NormalTok{(allModels) <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(allModels, }\ControlFlowTok{function}\NormalTok{(x) x}\OperatorTok{$}\NormalTok{method)}
+\KeywordTok{sort}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(allModels, }\ControlFlowTok{function}\NormalTok{(x) x}\OperatorTok{$}\NormalTok{results}\OperatorTok{$}\NormalTok{Accuracy[}\KeywordTok{length}\NormalTok{(x}\OperatorTok{$}\NormalTok{results}\OperatorTok{$}\NormalTok{Accuracy)]),}\DataTypeTok{decreasing =} \OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        rf   treebag       knn       gbm     rpart 
+## 0.9290286 0.9141377 0.8611988 0.8056844 0.2843393
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{summaryModels <-}\StringTok{ }\KeywordTok{resamples}\NormalTok{(}
+  \KeywordTok{list}\NormalTok{(}
+    \DataTypeTok{fitBag=}\NormalTok{modelFitBag,}
+    \DataTypeTok{knm=}\NormalTok{modelKNearestNeighbor, }
+    \DataTypeTok{rpart=}\NormalTok{modelRecursivePartition, }
+    \DataTypeTok{gbm=}\NormalTok{modelGradientBoostingMachine,}
+    \DataTypeTok{rf=}\NormalTok{modelRandomForest}
+\NormalTok{  )}
+\NormalTok{)}
+\KeywordTok{summary}\NormalTok{(summaryModels)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## summary.resamples(object = summaryModels)
+## 
+## Models: fitBag, knm, rpart, gbm, rf 
+## Number of resamples: 3 
+## 
+## Accuracy 
+##             Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA's
+## fitBag 0.9061491 0.9098511 0.9135530 0.9141377 0.9181320 0.9227111    0
+## knm    0.8838967 0.8928655 0.9018342 0.8958778 0.9018684 0.9019025    0
+## rpart  0.3357398 0.3670886 0.3984375 0.3784101 0.3997453 0.4010532    0
+## gbm    0.7980296 0.8029295 0.8078295 0.8056844 0.8095118 0.8111942    0
+## rf     0.9327331 0.9391077 0.9454823 0.9421355 0.9468366 0.9481909    0
+## 
+## Kappa 
+##             Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA's
+## fitBag 0.8812924 0.8859546 0.8906168 0.8913622 0.8963971 0.9021774    0
+## knm    0.8531573 0.8644671 0.8757769 0.8682613 0.8758133 0.8758498    0
+## rpart  0.1415161 0.1772751 0.2130341 0.1907712 0.2153988 0.2177635    0
+## gbm    0.7441349 0.7502867 0.7564386 0.7537984 0.7586302 0.7608218    0
+## rf     0.9148974 0.9229492 0.9310009 0.9267757 0.9327148 0.9344288    0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{bwplot}\NormalTok{(summaryModels)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project_files/figure-latex/combine_models-1.pdf}
+
+\subsection{Confusion Matrix for each
+Model}\label{confusion-matrix-for-each-model}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{getAccuracy <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(model) \{}
+  \KeywordTok{return}\NormalTok{(model}\OperatorTok{$}\NormalTok{result}\OperatorTok{$}\NormalTok{Accuracy[}\KeywordTok{length}\NormalTok{(model}\OperatorTok{$}\NormalTok{result}\OperatorTok{$}\NormalTok{Accuracy)])}
+\NormalTok{\}}
+\NormalTok{allModels.prediction <-}\StringTok{ }\KeywordTok{list}\NormalTok{()}
+\NormalTok{setNumberPrecision <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x, k) }\KeywordTok{trimws}\NormalTok{(}\KeywordTok{format}\NormalTok{(}\KeywordTok{round}\NormalTok{(x, k), }\DataTypeTok{nsmall=}\NormalTok{k))}
+
+\NormalTok{printConfusion <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(currentConfusionMatrix, modelName) \{}
+\NormalTok{  confusionMatrixAsDataFrame <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(currentConfusionMatrix}\OperatorTok{$}\NormalTok{table)}
+\NormalTok{  confmatrix_df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(currentConfusionMatrix}\OperatorTok{$}\NormalTok{table)}
+\NormalTok{  plotConfSquares <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(confmatrix_df) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_tile}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{Prediction, }\DataTypeTok{y=}\NormalTok{Reference, }\DataTypeTok{fill=}\NormalTok{Freq))}
+
+  \KeywordTok{cat}\NormalTok{(}\StringTok{"### Model "}\NormalTok{,modelName,}\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{  currentModel <-}\StringTok{ }\NormalTok{allModels[modelName]}
+
+\NormalTok{  label <-}\StringTok{ }\KeywordTok{paste}\NormalTok{(}\StringTok{'Confusion Matrix of model'}\NormalTok{,modelName)}
+  \KeywordTok{cat}\NormalTok{(}\KeywordTok{paste0}\NormalTok{(}\StringTok{"#### "}\NormalTok{,label,}\StringTok{"}\CharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{))}
+  \KeywordTok{cat}\NormalTok{(}\KeywordTok{paste0}\NormalTok{(}\KeywordTok{kable}\NormalTok{(currentConfusionMatrix}\OperatorTok{$}\NormalTok{table,}\DataTypeTok{digits =} \DecValTok{4}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{    }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{bootstrap_options =} \StringTok{"striped"}\NormalTok{, }\DataTypeTok{full_width =}\NormalTok{ F, }\DataTypeTok{position =} \StringTok{"center"}\NormalTok{),}\DataTypeTok{collapse=}\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{))}
+  
+  \KeywordTok{cat}\NormalTok{(}\KeywordTok{paste0}\NormalTok{(}\StringTok{"}\CharTok{\textbackslash{}n\textbackslash{}n\textbackslash{}n}\StringTok{#### Overall Statistics of model "}\NormalTok{,modelName,}\StringTok{"}\CharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{))}
+\NormalTok{  numberDigits <-}\StringTok{ }\DecValTok{4}
+\NormalTok{  tableColumns <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Accuracy"}\NormalTok{,}\StringTok{"95% CI"}\NormalTok{,}\StringTok{"No Information Rate"}\NormalTok{,}\StringTok{"Kappa"}\NormalTok{,}\StringTok{"Mcnemar's Test P-Value"}\NormalTok{)}
+\NormalTok{  tableValues <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}
+    \KeywordTok{setNumberPrecision}\NormalTok{(currentConfusionMatrix}\OperatorTok{$}\NormalTok{overall[[}\StringTok{"Accuracy"}\NormalTok{]], numberDigits),       }\CommentTok{# Accuracy}
+    \KeywordTok{paste0}\NormalTok{(                                                                               }\CommentTok{# Confidence Interval of accuracy}
+      \StringTok{"("}\NormalTok{,}
+      \KeywordTok{setNumberPrecision}\NormalTok{(currentConfusionMatrix}\OperatorTok{$}\NormalTok{overall[[}\StringTok{"AccuracyLower"}\NormalTok{]], numberDigits),}
+      \StringTok{", "}\NormalTok{, }
+      \KeywordTok{setNumberPrecision}\NormalTok{(currentConfusionMatrix}\OperatorTok{$}\NormalTok{overall[[}\StringTok{"AccuracyUpper"}\NormalTok{]], numberDigits),}
+      \StringTok{")"}
+\NormalTok{    ),}
+    \KeywordTok{setNumberPrecision}\NormalTok{(currentConfusionMatrix}\OperatorTok{$}\NormalTok{overall[[}\StringTok{"AccuracyPValue"}\NormalTok{]], numberDigits), }\CommentTok{# no information rate}
+    \KeywordTok{setNumberPrecision}\NormalTok{(currentConfusionMatrix}\OperatorTok{$}\NormalTok{overall[[}\StringTok{"Kappa"}\NormalTok{]], numberDigits),          }\CommentTok{# kappa}
+    \KeywordTok{setNumberPrecision}\NormalTok{(currentConfusionMatrix}\OperatorTok{$}\NormalTok{overall[[}\StringTok{"McnemarPValue"}\NormalTok{]], numberDigits)   }\CommentTok{# Mcnemar's Test P-Value}
+\NormalTok{  )}
+\NormalTok{  tableStatistics <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{statistics =}\NormalTok{ tableColumns, }\DataTypeTok{values =}\NormalTok{ tableValues)}
+  \KeywordTok{cat}\NormalTok{(}\KeywordTok{paste0}\NormalTok{(}\KeywordTok{kable}\NormalTok{(tableStatistics,}\DataTypeTok{digits =} \DecValTok{4}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{    }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{bootstrap_options =} \StringTok{"striped"}\NormalTok{, }\DataTypeTok{full_width =}\NormalTok{ F, }\DataTypeTok{position =} \StringTok{"center"}\NormalTok{),}\DataTypeTok{collapse=}\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{))}
+
+\NormalTok{  label <-}\StringTok{ }\KeywordTok{paste}\NormalTok{(}\StringTok{'Statistics by Class of model'}\NormalTok{,modelName)}
+  \KeywordTok{cat}\NormalTok{(}\KeywordTok{paste0}\NormalTok{(}\StringTok{"}\CharTok{\textbackslash{}n\textbackslash{}n\textbackslash{}n}\StringTok{#### "}\NormalTok{,label,}\StringTok{"}\CharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{))}
+  \KeywordTok{cat}\NormalTok{(}\KeywordTok{paste0}\NormalTok{(knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(currentConfusionMatrix}\OperatorTok{$}\NormalTok{byClass,}\DataTypeTok{digits =} \DecValTok{4}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{    }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{bootstrap_options =} \StringTok{"striped"}\NormalTok{, }\DataTypeTok{full_width =}\NormalTok{ F, }\DataTypeTok{position =} \StringTok{"left"}\NormalTok{, }\DataTypeTok{font_size =} \DecValTok{11}\NormalTok{),}\DataTypeTok{collapse=}\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{))}
+  \KeywordTok{cat}\NormalTok{(}\StringTok{'}\CharTok{\textbackslash{}n\textbackslash{}n}\StringTok{'}\NormalTok{)}
+  
+  \KeywordTok{print}\NormalTok{(plotConfSquares)}
+  \KeywordTok{cat}\NormalTok{(}\StringTok{'}\CharTok{\textbackslash{}n\textbackslash{}n}\StringTok{'}\NormalTok{)}
+  \ControlFlowTok{if}\NormalTok{(modelName}\OperatorTok{==}\StringTok{"rpart"}\NormalTok{)\{}
+    \KeywordTok{fancyRpartPlot}\NormalTok{(currentModel}\OperatorTok{$}\NormalTok{rpart}\OperatorTok{$}\NormalTok{finalModel)}
+\NormalTok{  \}  }
+  \ControlFlowTok{if}\NormalTok{(modelName}\OperatorTok{==}\StringTok{"rf"}\NormalTok{)\{}
+\NormalTok{    randomForestError <-}\StringTok{ }\KeywordTok{gg_error}\NormalTok{(currentModel}\OperatorTok{$}\NormalTok{rf}\OperatorTok{$}\NormalTok{finalModel)}
+    \KeywordTok{print}\NormalTok{(}\KeywordTok{plot}\NormalTok{(randomForestError))}
+\NormalTok{  \}}
+  \KeywordTok{cat}\NormalTok{(}\StringTok{'}\CharTok{\textbackslash{}n\textbackslash{}n}\StringTok{'}\NormalTok{)}
+\NormalTok{\}}
+
+\ControlFlowTok{for}\NormalTok{(modelName }\ControlFlowTok{in} \KeywordTok{names}\NormalTok{(allModels)) \{}
+  \KeywordTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{  currentModel <-}\StringTok{ }\NormalTok{allModels[modelName]}
+\NormalTok{  predictedClasse <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(currentModel,validationDataset)}
+\NormalTok{  allModels.prediction[[modelName]] <-}\StringTok{ }\NormalTok{predictedClasse}
+\NormalTok{  currentConfusionMatrix <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(predictedClasse[[modelName]], }\KeywordTok{as.factor}\NormalTok{(validationDataset}\OperatorTok{$}\NormalTok{classe))}
+  \KeywordTok{printConfusion}\NormalTok{(currentConfusionMatrix, modelName)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Model treebag}\label{model-treebag}
+
+\paragraph{Confusion Matrix of model
+treebag}\label{confusion-matrix-of-model-treebag}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r|r|r|r|r}
+\hline
+  & A & B & C & D & E\\
+\hline
+A & 551 & 7 & 1 & 1 & 1\\
+\hline
+B & 2 & 367 & 3 & 0 & 6\\
+\hline
+C & 0 & 2 & 334 & 11 & 6\\
+\hline
+D & 4 & 1 & 4 & 307 & 3\\
+\hline
+E & 1 & 2 & 0 & 2 & 344\\
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{Overall Statistics of model
+treebag}\label{overall-statistics-of-model-treebag}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l}
+\hline
+statistics & values\\
+\hline
+Accuracy & 0.9709\\
+\hline
+95\% CI & (0.9625, 0.9779)\\
+\hline
+No Information Rate & 0.0000\\
+\hline
+Kappa & 0.9632\\
+\hline
+Mcnemar's Test P-Value & 0.0510\\
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{Statistics by Class of model
+treebag}\label{statistics-by-class-of-model-treebag}
+
+\begingroup\fontsize{11}{13}\selectfont
+
+\begin{tabular}{l|r|r|r|r|r|r|r|r|r|r|r}
+\hline
+  & Sensitivity & Specificity & Pos Pred Value & Neg Pred Value & Precision & Recall & F1 & Prevalence & Detection Rate & Detection Prevalence & Balanced Accuracy\\
+\hline
+Class: A & 0.9875 & 0.9929 & 0.9822 & 0.9950 & 0.9822 & 0.9875 & 0.9848 & 0.2847 & 0.2811 & 0.2862 & 0.9902\\
+\hline
+Class: B & 0.9683 & 0.9930 & 0.9709 & 0.9924 & 0.9709 & 0.9683 & 0.9696 & 0.1934 & 0.1872 & 0.1929 & 0.9807\\
+\hline
+Class: C & 0.9766 & 0.9883 & 0.9462 & 0.9950 & 0.9462 & 0.9766 & 0.9612 & 0.1745 & 0.1704 & 0.1801 & 0.9824\\
+\hline
+Class: D & 0.9564 & 0.9927 & 0.9624 & 0.9915 & 0.9624 & 0.9564 & 0.9594 & 0.1638 & 0.1566 & 0.1628 & 0.9745\\
+\hline
+Class: E & 0.9556 & 0.9969 & 0.9857 & 0.9901 & 0.9857 & 0.9556 & 0.9704 & 0.1837 & 0.1755 & 0.1781 & 0.9762\\
+\hline
+\end{tabular}
+
+\endgroup{}
+
+\includegraphics{Project_files/figure-latex/apply_model_on_validation-1.pdf}
+
+\subsubsection{Model knn}\label{model-knn}
+
+\paragraph{Confusion Matrix of model
+knn}\label{confusion-matrix-of-model-knn}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r|r|r|r|r}
+\hline
+  & A & B & C & D & E\\
+\hline
+A & 550 & 8 & 0 & 1 & 1\\
+\hline
+B & 2 & 363 & 1 & 0 & 1\\
+\hline
+C & 2 & 7 & 338 & 11 & 5\\
+\hline
+D & 3 & 0 & 3 & 307 & 2\\
+\hline
+E & 1 & 1 & 0 & 2 & 351\\
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{Overall Statistics of model
+knn}\label{overall-statistics-of-model-knn}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l}
+\hline
+statistics & values\\
+\hline
+Accuracy & 0.9740\\
+\hline
+95\% CI & (0.9659, 0.9806)\\
+\hline
+No Information Rate & 0.0000\\
+\hline
+Kappa & 0.9671\\
+\hline
+Mcnemar's Test P-Value & NaN\\
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{Statistics by Class of model
+knn}\label{statistics-by-class-of-model-knn}
+
+\begingroup\fontsize{11}{13}\selectfont
+
+\begin{tabular}{l|r|r|r|r|r|r|r|r|r|r|r}
+\hline
+  & Sensitivity & Specificity & Pos Pred Value & Neg Pred Value & Precision & Recall & F1 & Prevalence & Detection Rate & Detection Prevalence & Balanced Accuracy\\
+\hline
+Class: A & 0.9857 & 0.9929 & 0.9821 & 0.9943 & 0.9821 & 0.9857 & 0.9839 & 0.2847 & 0.2806 & 0.2857 & 0.9893\\
+\hline
+Class: B & 0.9578 & 0.9975 & 0.9891 & 0.9900 & 0.9891 & 0.9578 & 0.9732 & 0.1934 & 0.1852 & 0.1872 & 0.9776\\
+\hline
+Class: C & 0.9883 & 0.9845 & 0.9311 & 0.9975 & 0.9311 & 0.9883 & 0.9589 & 0.1745 & 0.1724 & 0.1852 & 0.9864\\
+\hline
+Class: D & 0.9564 & 0.9951 & 0.9746 & 0.9915 & 0.9746 & 0.9564 & 0.9654 & 0.1638 & 0.1566 & 0.1607 & 0.9758\\
+\hline
+Class: E & 0.9750 & 0.9975 & 0.9887 & 0.9944 & 0.9887 & 0.9750 & 0.9818 & 0.1837 & 0.1791 & 0.1811 & 0.9862\\
+\hline
+\end{tabular}
+
+\endgroup{}
+
+\includegraphics{Project_files/figure-latex/apply_model_on_validation-2.pdf}
+
+\subsubsection{Model rpart}\label{model-rpart}
+
+\paragraph{Confusion Matrix of model
+rpart}\label{confusion-matrix-of-model-rpart}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r|r|r|r|r}
+\hline
+  & A & B & C & D & E\\
+\hline
+A & 507 & 221 & 318 & 154 & 147\\
+\hline
+B & 0 & 0 & 0 & 0 & 0\\
+\hline
+C & 0 & 0 & 0 & 0 & 0\\
+\hline
+D & 40 & 76 & 17 & 123 & 56\\
+\hline
+E & 11 & 82 & 7 & 44 & 157\\
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{Overall Statistics of model
+rpart}\label{overall-statistics-of-model-rpart}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l}
+\hline
+statistics & values\\
+\hline
+Accuracy & 0.4015\\
+\hline
+95\% CI & (0.3797, 0.4236)\\
+\hline
+No Information Rate & 0.0000\\
+\hline
+Kappa & 0.2021\\
+\hline
+Mcnemar's Test P-Value & NaN\\
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{Statistics by Class of model
+rpart}\label{statistics-by-class-of-model-rpart}
+
+\begingroup\fontsize{11}{13}\selectfont
+
+\begin{tabular}{l|r|r|r|r|r|r|r|r|r|r|r}
+\hline
+  & Sensitivity & Specificity & Pos Pred Value & Neg Pred Value & Precision & Recall & F1 & Prevalence & Detection Rate & Detection Prevalence & Balanced Accuracy\\
+\hline
+Class: A & 0.9086 & 0.4009 & 0.3764 & 0.9168 & 0.3764 & 0.9086 & 0.5323 & 0.2847 & 0.2587 & 0.6872 & 0.6547\\
+\hline
+Class: B & 0.0000 & 1.0000 & NaN & 0.8066 & NA & 0.0000 & NA & 0.1934 & 0.0000 & 0.0000 & 0.5000\\
+\hline
+Class: C & 0.0000 & 1.0000 & NaN & 0.8255 & NA & 0.0000 & NA & 0.1745 & 0.0000 & 0.0000 & 0.5000\\
+\hline
+Class: D & 0.3832 & 0.8847 & 0.3942 & 0.8799 & 0.3942 & 0.3832 & 0.3886 & 0.1638 & 0.0628 & 0.1592 & 0.6339\\
+\hline
+Class: E & 0.4361 & 0.9100 & 0.5216 & 0.8776 & 0.5216 & 0.4361 & 0.4750 & 0.1837 & 0.0801 & 0.1536 & 0.6731\\
+\hline
+\end{tabular}
+
+\endgroup{}
+
+\includegraphics{Project_files/figure-latex/apply_model_on_validation-3.pdf}
+
+\includegraphics{Project_files/figure-latex/apply_model_on_validation-4.pdf}
+
+\subsubsection{Model gbm}\label{model-gbm}
+
+\paragraph{Confusion Matrix of model
+gbm}\label{confusion-matrix-of-model-gbm}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r|r|r|r|r}
+\hline
+  & A & B & C & D & E\\
+\hline
+A & 504 & 35 & 19 & 11 & 6\\
+\hline
+B & 11 & 295 & 24 & 3 & 29\\
+\hline
+C & 20 & 29 & 282 & 35 & 25\\
+\hline
+D & 18 & 6 & 9 & 267 & 17\\
+\hline
+E & 5 & 14 & 8 & 5 & 283\\
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{Overall Statistics of model
+gbm}\label{overall-statistics-of-model-gbm}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l}
+\hline
+statistics & values\\
+\hline
+Accuracy & 0.8321\\
+\hline
+95\% CI & (0.8148, 0.8484)\\
+\hline
+No Information Rate & 0.0000\\
+\hline
+Kappa & 0.7875\\
+\hline
+Mcnemar's Test P-Value & 0.0000\\
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{Statistics by Class of model
+gbm}\label{statistics-by-class-of-model-gbm}
+
+\begingroup\fontsize{11}{13}\selectfont
+
+\begin{tabular}{l|r|r|r|r|r|r|r|r|r|r|r}
+\hline
+  & Sensitivity & Specificity & Pos Pred Value & Neg Pred Value & Precision & Recall & F1 & Prevalence & Detection Rate & Detection Prevalence & Balanced Accuracy\\
+\hline
+Class: A & 0.9032 & 0.9494 & 0.8765 & 0.9610 & 0.8765 & 0.9032 & 0.8897 & 0.2847 & 0.2571 & 0.2934 & 0.9263\\
+\hline
+Class: B & 0.7784 & 0.9576 & 0.8149 & 0.9474 & 0.8149 & 0.7784 & 0.7962 & 0.1934 & 0.1505 & 0.1847 & 0.8680\\
+\hline
+Class: C & 0.8246 & 0.9326 & 0.7212 & 0.9618 & 0.7212 & 0.8246 & 0.7694 & 0.1745 & 0.1439 & 0.1995 & 0.8786\\
+\hline
+Class: D & 0.8318 & 0.9695 & 0.8423 & 0.9671 & 0.8423 & 0.8318 & 0.8370 & 0.1638 & 0.1362 & 0.1617 & 0.9006\\
+\hline
+Class: E & 0.7861 & 0.9800 & 0.8984 & 0.9532 & 0.8984 & 0.7861 & 0.8385 & 0.1837 & 0.1444 & 0.1607 & 0.8831\\
+\hline
+\end{tabular}
+
+\endgroup{}
+
+\includegraphics{Project_files/figure-latex/apply_model_on_validation-5.pdf}
+
+\subsubsection{Model rf}\label{model-rf}
+
+\paragraph{Confusion Matrix of model
+rf}\label{confusion-matrix-of-model-rf}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r|r|r|r|r}
+\hline
+  & A & B & C & D & E\\
+\hline
+A & 557 & 7 & 0 & 0 & 0\\
+\hline
+B & 0 & 370 & 1 & 0 & 1\\
+\hline
+C & 0 & 2 & 340 & 11 & 2\\
+\hline
+D & 1 & 0 & 1 & 309 & 1\\
+\hline
+E & 0 & 0 & 0 & 1 & 356\\
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{Overall Statistics of model
+rf}\label{overall-statistics-of-model-rf}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l}
+\hline
+statistics & values\\
+\hline
+Accuracy & 0.9857\\
+\hline
+95\% CI & (0.9794, 0.9905)\\
+\hline
+No Information Rate & 0.0000\\
+\hline
+Kappa & 0.9819\\
+\hline
+Mcnemar's Test P-Value & NaN\\
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{Statistics by Class of model
+rf}\label{statistics-by-class-of-model-rf}
+
+\begingroup\fontsize{11}{13}\selectfont
+
+\begin{tabular}{l|r|r|r|r|r|r|r|r|r|r|r}
+\hline
+  & Sensitivity & Specificity & Pos Pred Value & Neg Pred Value & Precision & Recall & F1 & Prevalence & Detection Rate & Detection Prevalence & Balanced Accuracy\\
+\hline
+Class: A & 0.9982 & 0.9950 & 0.9876 & 0.9993 & 0.9876 & 0.9982 & 0.9929 & 0.2847 & 0.2842 & 0.2878 & 0.9966\\
+\hline
+Class: B & 0.9763 & 0.9987 & 0.9946 & 0.9943 & 0.9946 & 0.9763 & 0.9854 & 0.1934 & 0.1888 & 0.1898 & 0.9875\\
+\hline
+Class: C & 0.9942 & 0.9907 & 0.9577 & 0.9988 & 0.9577 & 0.9942 & 0.9756 & 0.1745 & 0.1735 & 0.1811 & 0.9924\\
+\hline
+Class: D & 0.9626 & 0.9982 & 0.9904 & 0.9927 & 0.9904 & 0.9626 & 0.9763 & 0.1638 & 0.1577 & 0.1592 & 0.9804\\
+\hline
+Class: E & 0.9889 & 0.9994 & 0.9972 & 0.9975 & 0.9972 & 0.9889 & 0.9930 & 0.1837 & 0.1816 & 0.1821 & 0.9941\\
+\hline
+\end{tabular}
+
+\endgroup{}
+
+\includegraphics{Project_files/figure-latex/apply_model_on_validation-6.pdf}
+
+\includegraphics{Project_files/figure-latex/apply_model_on_validation-7.pdf}
+
+\subsection{Voting Mechanism}\label{voting-mechanism}
+
+Now, let's combine all the models that have a accuracy bigger or equal
+than the minimal 80\% and make them vote using the accuracy of each
+model as weight.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{voting <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(data) \{}
+  \CommentTok{# Any model with worse accuracy than this, should not be considered on the voting ( score = 0 )}
+\NormalTok{  MIN_ACCURACY =}\StringTok{ }\FloatTok{0.8}
+  
+\NormalTok{  predictions <-}\StringTok{ }\KeywordTok{list}\NormalTok{()}
+\NormalTok{  predictions.accuracy <-}\StringTok{ }\KeywordTok{list}\NormalTok{()}
+\NormalTok{  sumAccuracy <-}\StringTok{ }\DecValTok{0}
+  \ControlFlowTok{for}\NormalTok{(modelName }\ControlFlowTok{in} \KeywordTok{names}\NormalTok{(allModels)) \{}
+    \KeywordTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{    currentModel <-}\StringTok{ }\NormalTok{allModels[modelName][[modelName]]}
+\NormalTok{    predictions[[modelName]] <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(currentModel,data)}
+\NormalTok{    predictions.accuracy[[modelName]] <-}\StringTok{ }\KeywordTok{ifelse}\NormalTok{(}
+      \KeywordTok{getAccuracy}\NormalTok{(currentModel) }\OperatorTok{>}\StringTok{ }\NormalTok{MIN_ACCURACY, }\CommentTok{# filter by accuracy over the threshold}
+      \KeywordTok{getAccuracy}\NormalTok{(currentModel), }
+      \DecValTok{0}
+\NormalTok{    )}
+\NormalTok{    sumAccuracy <-}\StringTok{ }\NormalTok{sumAccuracy }\OperatorTok{+}\StringTok{ }\NormalTok{predictions.accuracy[[modelName]]}
+\NormalTok{  \}}
+\NormalTok{  predictions <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(predictions)}
+\NormalTok{  predictions.accuracy <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(predictions.accuracy)}
+\NormalTok{  possibleValues <-}\StringTok{ }\KeywordTok{unique}\NormalTok{(trainData}\OperatorTok{$}\NormalTok{classe)}
+\NormalTok{  scoreByValue <-}\StringTok{ }\KeywordTok{list}\NormalTok{()}
+  \CommentTok{# calculate the score for each possible value}
+  \ControlFlowTok{for}\NormalTok{(possibleValue }\ControlFlowTok{in}\NormalTok{ possibleValues) \{}
+\NormalTok{    columnName <-}\KeywordTok{paste0}\NormalTok{(}\StringTok{"score"}\NormalTok{,possibleValue)}
+    \CommentTok{# get the score only of the rows where the }
+    \CommentTok{# value is the current value, sum them}
+    \CommentTok{# and divide by the sumAccuracy}
+\NormalTok{    scoreByValue[[columnName]] <-}\StringTok{ }\KeywordTok{rowSums}\NormalTok{(}
+      \KeywordTok{t}\NormalTok{(}\KeywordTok{t}\NormalTok{(predictions }\OperatorTok{==}\StringTok{ }\NormalTok{possibleValue) }\OperatorTok{*}\StringTok{ }\KeywordTok{as.numeric}\NormalTok{(predictions.accuracy[}\DecValTok{1}\NormalTok{,]))}
+\NormalTok{    ) }\OperatorTok{/}\StringTok{ }\NormalTok{sumAccuracy}
+\NormalTok{  \}  }
+  \CommentTok{# replace null values by zero}
+\NormalTok{  votingData <-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(scoreByValue)}
+  \ControlFlowTok{for}\NormalTok{(possibleValue }\ControlFlowTok{in}\NormalTok{ possibleValues) \{}
+\NormalTok{    columnName <-}\KeywordTok{paste0}\NormalTok{(}\StringTok{"score"}\NormalTok{,possibleValue)}
+\NormalTok{    votingData[ }\KeywordTok{is.na}\NormalTok{(columnName), columnName ] <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{)}
+\NormalTok{  \}  }
+  \CommentTok{# calculate the max value by each row}
+\NormalTok{  votingData}\OperatorTok{$}\NormalTok{maxScore <-}\StringTok{ }\KeywordTok{apply}\NormalTok{(votingData,}\DecValTok{1}\NormalTok{,max)}
+  \CommentTok{# vote in the value with the max value}
+\NormalTok{  votingData}\OperatorTok{$}\NormalTok{voted <-}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+  \ControlFlowTok{for}\NormalTok{(possibleValue }\ControlFlowTok{in}\NormalTok{ possibleValues) \{}
+\NormalTok{    columnName <-}\KeywordTok{paste0}\NormalTok{(}\StringTok{"score"}\NormalTok{,possibleValue)}
+\NormalTok{    votingData[votingData[[columnName]] }\OperatorTok{==}\StringTok{ }\NormalTok{votingData}\OperatorTok{$}\NormalTok{maxScore, }\StringTok{"voted"}\NormalTok{] <-}\StringTok{ }\NormalTok{possibleValue}
+\NormalTok{  \}}
+\NormalTok{  votingData}\OperatorTok{$}\NormalTok{classe <-}\StringTok{ }\NormalTok{data}\OperatorTok{$}\NormalTok{classe}
+  \KeywordTok{return}\NormalTok{(votingData)}
+\NormalTok{\}}
+\NormalTok{votedValidation <-}\StringTok{ }\KeywordTok{voting}\NormalTok{(validationDataset)}
+\NormalTok{votingConfusionMatrix <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(}\KeywordTok{as.factor}\NormalTok{(votedValidation}\OperatorTok{$}\NormalTok{voted),}\KeywordTok{as.factor}\NormalTok{(validationDataset}\OperatorTok{$}\NormalTok{classe))}
+\KeywordTok{printConfusion}\NormalTok{(votingConfusionMatrix, }\StringTok{"voting"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Model voting}\label{model-voting}
+
+\paragraph{Confusion Matrix of model
+voting}\label{confusion-matrix-of-model-voting}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|r|r|r|r|r}
+\hline
+  & A & B & C & D & E\\
+\hline
+A & 557 & 8 & 0 & 0 & 0\\
+\hline
+B & 0 & 369 & 2 & 0 & 1\\
+\hline
+C & 0 & 1 & 339 & 11 & 3\\
+\hline
+D & 1 & 0 & 1 & 309 & 2\\
+\hline
+E & 0 & 1 & 0 & 1 & 354\\
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{Overall Statistics of model
+voting}\label{overall-statistics-of-model-voting}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l}
+\hline
+statistics & values\\
+\hline
+Accuracy & 0.9837\\
+\hline
+95\% CI & (0.9770, 0.9888)\\
+\hline
+No Information Rate & 0.0000\\
+\hline
+Kappa & 0.9793\\
+\hline
+Mcnemar's Test P-Value & NaN\\
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{Statistics by Class of model
+voting}\label{statistics-by-class-of-model-voting}
+
+\begingroup\fontsize{11}{13}\selectfont
+
+\begin{tabular}{l|r|r|r|r|r|r|r|r|r|r|r}
+\hline
+  & Sensitivity & Specificity & Pos Pred Value & Neg Pred Value & Precision & Recall & F1 & Prevalence & Detection Rate & Detection Prevalence & Balanced Accuracy\\
+\hline
+Class: A & 0.9982 & 0.9943 & 0.9858 & 0.9993 & 0.9858 & 0.9982 & 0.9920 & 0.2847 & 0.2842 & 0.2883 & 0.9963\\
+\hline
+Class: B & 0.9736 & 0.9981 & 0.9919 & 0.9937 & 0.9919 & 0.9736 & 0.9827 & 0.1934 & 0.1883 & 0.1898 & 0.9859\\
+\hline
+Class: C & 0.9912 & 0.9907 & 0.9576 & 0.9981 & 0.9576 & 0.9912 & 0.9741 & 0.1745 & 0.1730 & 0.1806 & 0.9910\\
+\hline
+Class: D & 0.9626 & 0.9976 & 0.9872 & 0.9927 & 0.9872 & 0.9626 & 0.9748 & 0.1638 & 0.1577 & 0.1597 & 0.9801\\
+\hline
+Class: E & 0.9833 & 0.9988 & 0.9944 & 0.9963 & 0.9944 & 0.9833 & 0.9888 & 0.1837 & 0.1806 & 0.1816 & 0.9910\\
+\hline
+\end{tabular}
+
+\endgroup{}
+
+\includegraphics{Project_files/figure-latex/create_voting_mechanism-1.pdf}
+
+\subsection{Choosing the final Model}\label{choosing-the-final-model}
+
+The voting process show a good result and because it is combining
+different approachs it is more hard to have the same type of
+overfitting.
+
+\subsection{Show prediction on Test
+Data}\label{show-prediction-on-test-data}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{predictSamples <-}\StringTok{ }\KeywordTok{voting}\NormalTok{(testData)}
+\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(predictSamples,}\DataTypeTok{caption=}\StringTok{'predicting classe of the test data based on the model'}\NormalTok{,}\DataTypeTok{align =} \StringTok{"c"}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{(}\DataTypeTok{bootstrap_options =} \KeywordTok{c}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\StringTok{"hover"}\NormalTok{, }\StringTok{"condensed"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[t]
+
+\caption{\label{tab:apply_on_test_data}predicting classe of the test data based on the model}
+\centering
+\begin{tabular}{c|c|c|c|c|c|c}
+\hline
+scoreA & scoreB & scoreC & scoreD & scoreE & maxScore & voted\\
+\hline
+0.0000000 & 0.7704635 & 0.2295365 & 0.0000000 & 0 & 0.7704635 & B\\
+\hline
+1.0000000 & 0.0000000 & 0.0000000 & 0.0000000 & 0 & 1.0000000 & A\\
+\hline
+0.4899709 & 0.2646768 & 0.2453523 & 0.0000000 & 0 & 0.4899709 & A\\
+\hline
+1.0000000 & 0.0000000 & 0.0000000 & 0.0000000 & 0 & 1.0000000 & A\\
+\hline
+1.0000000 & 0.0000000 & 0.0000000 & 0.0000000 & 0 & 1.0000000 & A\\
+\hline
+0.0000000 & 0.0000000 & 0.0000000 & 0.0000000 & 1 & 1.0000000 & E\\
+\hline
+0.0000000 & 0.0000000 & 0.0000000 & 1.0000000 & 0 & 1.0000000 & D\\
+\hline
+0.0000000 & 0.7704635 & 0.0000000 & 0.2295365 & 0 & 0.7704635 & B\\
+\hline
+1.0000000 & 0.0000000 & 0.0000000 & 0.0000000 & 0 & 1.0000000 & A\\
+\hline
+1.0000000 & 0.0000000 & 0.0000000 & 0.0000000 & 0 & 1.0000000 & A\\
+\hline
+0.4899709 & 0.5100291 & 0.0000000 & 0.0000000 & 0 & 0.5100291 & B\\
+\hline
+0.0000000 & 0.0000000 & 1.0000000 & 0.0000000 & 0 & 1.0000000 & C\\
+\hline
+0.0000000 & 1.0000000 & 0.0000000 & 0.0000000 & 0 & 1.0000000 & B\\
+\hline
+1.0000000 & 0.0000000 & 0.0000000 & 0.0000000 & 0 & 1.0000000 & A\\
+\hline
+0.0000000 & 0.0000000 & 0.0000000 & 0.0000000 & 1 & 1.0000000 & E\\
+\hline
+0.0000000 & 0.0000000 & 0.0000000 & 0.0000000 & 1 & 1.0000000 & E\\
+\hline
+1.0000000 & 0.0000000 & 0.0000000 & 0.0000000 & 0 & 1.0000000 & A\\
+\hline
+0.0000000 & 1.0000000 & 0.0000000 & 0.0000000 & 0 & 1.0000000 & B\\
+\hline
+0.0000000 & 1.0000000 & 0.0000000 & 0.0000000 & 0 & 1.0000000 & B\\
+\hline
+0.0000000 & 1.0000000 & 0.0000000 & 0.0000000 & 0 & 1.0000000 & B\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cat}\NormalTok{(predictSamples}\OperatorTok{$}\NormalTok{voted)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## B A A A A E D B A A B C B A E E A B B B
+\end{verbatim}
+
+\subsection{Conclusion}\label{conclusion}
+
+The final model used is a voting from the best models created from the
+data. The accuracy of the voting model on the test data was very good
+but not as good as on the validation dataset, as expected.
+
+\subsection{Biografy}\label{biografy}
+
+{[}1{]} Velloso, E.; Bulling, A.; Gellersen, H.; Ugulino, W.; Fuks, H.
+\href{http://groupware.les.inf.puc-rio.br/public/papers/2013.Velloso.QAR-WLE.pdf}{Qualitative
+Activity Recognition of Weight Lifting Exercises}. Proceedings of 4th
+International Conference in Cooperation with SIGCHI (Augmented Human
+'13) . Stuttgart, Germany: ACM SIGCHI, 2013.
+
+
+\end{document}
