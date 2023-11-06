@@ -6,7 +6,7 @@ Grouping concluded courses and certifications into a single project.
 
 ### AWS Certified Solutions Architect - Associate
 
-* [AWS Certified Solutions Architect - Associate certificate.pdf](cloud-computing%2Faws-certified-solutions-archietct%2FAWS%20Certified%20Solutions%20Architect%20-%20Associate%20certificate.pdf)
+* [AWS Certified Solutions Architect - Associate certificate](cloud-computing%2Faws-certified-solutions-archietct%2FAWS%20Certified%20Solutions%20Architect%20-%20Associate%20certificate.pdf)
 
 ## Specializations
 
