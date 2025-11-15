@@ -14,6 +14,10 @@ Grouping concluded courses and certifications into a single project.
 
 * [Programming with Google Go](go%2F00-uci-programming-with-google-go%2Fcertificate.pdf)
 
+### Johns Hopkins University
+
+* [Data Science - Foundations Using R](./data-science/specialization/data-science-foundations-using-R.pdf)
+
 ## Courses
 
 ### AWS
@@ -57,3 +61,7 @@ Grouping concluded courses and certifications into a single project.
 
 * [Functional Programming With Stream on Java 9](functional-programming%2Ffunctional-programming-with-streams-in-java-9%2Fcertificate.pdf)
 * [Apache Spark and Scala do Big Data](functional-programming%2Fapache-spark-and-scala-do-big-data%2Fcertificate.pdf)
+
+### Others
+
+* [Smart Contracts with Solidity](./smart-contracts/smart-contracts-with-solidity/certificate.pdf)
