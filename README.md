@@ -51,6 +51,7 @@ Grouping concluded courses and certifications into a single project.
 
 * [Functional Programming Principles in Scala](functional-programming%2Ffunctional-programming-principals-in-scala%2Fcertificate.pdf)
 * [Functional Program Design in Scala](functional-programming%2Ffunctional-program-design-in-scala%2Fcertificate.pdf)
+* [Parallel Programming in Scala](./functional-programming/parallel-programming/certificate.pdf)
 
 ### Duke University
 
